@@ -1,0 +1,43 @@
+
+{% extends "auctions/layout.html" %}
+{% load admin_urls %}
+{% block body %}
+{% if category %}
+    <h2>{{ category }} -  Active Listings</h2>
+{% else %}
+    <h2>  Active Listings</h2>
+    {% endif %}
+    <div class="row">
+    {% for auction in auctions %}
+ 
+
+  <div class="col">
+    <a href="{% url 'place_bid' auction_id=auction.id %}">
+     
+            {% if auction.photo %} 
+            <img src="{{ auction.photo }}" alt="{{ auction.name }}" class="auction_image_index">
+            {% endif %}
+            </a>
+            <p> {{ auction.name }} </p>
+            {% if auction.current_bid %}
+            <p class="price_index">Price: ${{ auction.current_bid }} </p>
+            {% else %}
+            <p class="price_index">Price: ${{ auction.price }} </p>
+            {% endif %}
+            <!-- <h4> $ {{ auction.current_bid }} </h4>
+            <h4> {{ auction.number_bid }} bid(s) so far</h4> -->
+           
+            {% if auction.user.id == user_id%}
+              <form action="{% url 'close_auction' auction_id=auction.id  %}" method="get">
+                <button class="btn btn-danger mb-2" type="submit">Close</button>
+              </form>
+    
+            {% endif %}
+          </a>
+          </div>
+       
+        {% empty %}
+        <h4> No active listings found. </h4>
+    {% endfor %}
+  </div>
+{% endblock %}

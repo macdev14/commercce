@@ -1,0 +1,119 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    
+    <div class="row">
+      <h2>Listing: {{ auction.name }} </h2><br>
+      
+    </div>
+   <div class="row">
+    <div class="col">
+    {% if auction.active %} 
+     {% if auction.in_watchlist %}
+     <a href="{% url 'watchlist_delete' auction.id %}" role="button" class="btn btn-secondary btn-sm">Remove from Watchlist</a>
+     {%else%}
+      <!-- <button type="submit" name="auction_id" value="{{auction.id}}" class="btn btn-secondary btn-sm watchlist-btn">Watchlist</button> -->
+      <a href="{% url 'watchlist_add' auction.id %}" role="button" class="btn btn-secondary btn-sm">Add to Watchlist</a>
+      {%endif%}
+      {%endif%}
+    </div> 
+   </div>
+    {% if auction.photo %} 
+    <img src="{{ auction.photo }}" alt="{{auction.name}}" class="auction_image">
+    {% endif %}
+    <p class="description"> {{ auction.description }} </p>
+    <h4>${% if bid.price %}{{ bid.price }}{% else %}
+      {{ auction.price }} {% endif %}</h4>
+   
+      <h4>Current Bid(s): {{  auction | number_bids }}</h4>
+    
+
+   {% if auction.active %}
+    {% if auction.user.id == user.id  %}
+      <form action="{% url 'close_auction' auction_id=auction.id  %}" method="get">
+        <button class="btn btn-danger mb-2" type="submit">Close</button>
+      </form>
+      {% endif %}
+      
+      {% if auction.user.id != user.id %}
+    
+            {% if auction.winner.id == user.id %}
+            <h4 class="winner">Winning</h4>
+                    
+                      {% else %}
+                      <form enctype="multipart/form-data" method="post" >
+                        <div class="input-group mb-1">
+                          {% csrf_token %}
+                          {{ form }}
+                          <div class="input-group-append">
+                            <button class="btn btn-primary mb-2" type="submit">Bid</button>
+                          </div>
+                        </div>
+                  </form>
+
+                      {% endif %}     
+        {% endif %}
+    {% else %}
+    {% if auction.winner.id == user.id %}
+    <h4 class="winner">Winner</h4>{% endif %}
+    <h4 class="closed">Closed</h4>
+{% endif %}
+<br>
+
+  
+    <h4>Comments</h4>
+    
+
+<br>
+  <form action="{% url 'add_comment' %}" method="post">
+    <div class="input-group mb-1">
+      {% csrf_token %}
+    <input type="hidden" class="form-control" name="auction" value="{{ auction.id }}">
+    <input type="text" class="form-control" name="content" id="content" required>
+    <div class="input-group-append">
+       <button type="submit" class="btn btn-primary">Comment</button>
+    </div>
+   
+  </div>
+  </form>
+
+<br>
+
+
+
+  {% for post in comment %}
+  
+    
+      
+        <div class="card"> 
+          <div class="card-body">
+            <div class="card-title">
+
+           
+                 <span class="comment_user">
+                  {{ post.user.username }}: &nbsp; 
+
+                  </span>
+            </div>
+      
+    
+                    <p class="card-text">
+                      {{post.content}}
+                    </p>
+              </div>
+        </div>
+      
+    
+
+  <br>
+  
+  {% empty %}
+        <h4> No listing comments found. </h4>
+  {% endfor %}
+
+
+
+
+
+{% endblock %} 

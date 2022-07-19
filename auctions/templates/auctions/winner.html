@@ -1,0 +1,27 @@
+
+{% extends "auctions/layout.html" %}
+{% load admin_urls %}
+{% block body %}
+    <h2>Winning Bids</h2>
+
+    {% for item in auctions %}
+    <div class="col">
+  
+      <h2> {{ item.name }} </h2>
+      <a href="{% url 'place_bid' auction_id=item.id %}">
+            {% if item.photo %} 
+            <img src="{{ item.photo }}"  class="auction_image_index" alt="" width="200" height="300">
+            {% endif %}
+          </a>
+            {% if item.active %}
+            <h4 class="winner">Winning</h4>
+            {% else %}
+            <h4 class="winner">Winner</h4>
+            <h4 class="closed">Closed</h4>
+            {% endif %}
+         
+      </div>
+        {% empty %}
+        <h4> No winning bids found. </h4>
+    {% endfor %}
+{% endblock %}

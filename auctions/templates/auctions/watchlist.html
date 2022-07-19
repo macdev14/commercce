@@ -1,0 +1,30 @@
+
+{% extends "auctions/layout.html" %}
+{% load admin_urls %}
+{% block body %}
+    <h2>Watchlist</h2>
+
+    {% for item in watchlist %}
+    <div class="col">
+  
+      <h2> {{ item.auction.name }} </h2>
+      <a href="{% url 'place_bid' auction_id=item.auction.id %}">
+            {% if item.auction.photo %} 
+            <img src="{{ item.auction.photo }}"  class="auction_image_index" alt="" width="200" height="300">
+            {% endif %}
+          </a>
+            <p  class="price_index"> $ {{ item.auction.current_bid }} </h4>
+            <p class="price_index"> {{ item.auction.number_bid }} bid(s) so far</h4>
+            <p class="description"> {{ item.auction.description }} </p>
+            {% if item.user.id == user_id%}
+              <form action="{% url 'edit_auction' auction_id=item.auction.id  %}" method="get">
+                <button class="btn btn-primary mb-2" type="submit">Edit</button>
+              </form>
+    
+            {% endif %}
+         
+      </div>
+        {% empty %}
+        <h4> No listings found. </h4>
+    {% endfor %}
+{% endblock %}
