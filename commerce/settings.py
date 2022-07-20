@@ -51,7 +51,7 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['commercce.herokuapp.com', 'localhost', 'commerce.herokuapp.com']
+ALLOWED_HOSTS = ['commercce.herokuapp.com', 'localhost', 'commerce.lauromtp.com']
 
 
 # Application definition
