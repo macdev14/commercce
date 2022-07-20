@@ -52,7 +52,7 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['commercce.herokuapp.com', 'localhost', 'commerce.lauromtp.com']
-
+CSRF_TRUSTED_ORIGINS = ['https://commerce.lauromtp.com', 'https://commercce.herokuapp.com',  'localhost'] 
 
 # Application definition
 
