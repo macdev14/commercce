@@ -21,3 +21,4 @@ sqlparse==0.4.2
 submit50==3.1.1
 termcolor==1.1.0
 urllib3==1.26.10
+whitenoise==6.2.0
